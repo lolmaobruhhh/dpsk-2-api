@@ -606,7 +606,7 @@ async function boot() {
         try { cleanupOldConversations(); } catch (e) { console.error('[Cleanup]', e.message); }
     }, 60 * 60 * 1000);
 
-    app.listen(PORT, function () {
+    app.listen(PORT, '0.0.0.0', function () {
         console.log('');
         console.log('  ╔══════════════════════════════════════╗');
         console.log('  ║     DeepSeek2API Reverse Proxy       ║');
