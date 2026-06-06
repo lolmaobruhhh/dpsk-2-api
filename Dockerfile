@@ -1,10 +1,6 @@
 FROM node:20-bullseye
 
-# Prevent Playwright from downloading its own bundled Chromium (~400MB) — we use the system Chrome instead!
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    PLAYWRIGHT_BROWSERS_PATH=0
-
-# Install necessary graphical dependencies, xvfb, x11vnc, novnc, window manager, Chrome, and GIT
+# Install necessary graphical dependencies, xvfb, x11vnc, novnc, window manager and GIT
 RUN apt-get update && apt-get install -y \
     git \
     xvfb \
@@ -17,9 +13,6 @@ RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
     procps \
-    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-    && apt-get update && apt-get install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
 # Fix noVNC launch script paths
@@ -39,8 +32,9 @@ ADD "https://api.github.com/repos/lolmaobruhhh/dpsk-2-api/commits?per_page=1" /t
 # Clone your specific repository directly into the container
 RUN git clone https://github.com/lolmaobruhhh/dpsk-2-api.git .
 
-# Install dependencies (Playwright will NOT download Chromium thanks to env vars above)
+# Install dependencies and let Playwright install the customized Chromium binary + required libs
 RUN npm install
+RUN npx playwright install chromium --with-deps
 
 # Fix Windows CRLF line endings on the shell script so bash doesn't crash on boot
 RUN dos2unix start.sh
