@@ -1,3 +1,13 @@
+---
+title: DeepSeek2API
+emoji: 🔥
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: true
+---
+
 # DeepSeek2API Reverse Proxy (Stateless Edition)
 
 A high-performance, stateless reverse proxy bridging OpenAI-compatible completions (e.g. from Janitor AI, SillyTavern) to DeepSeek's internal web chat API. 
