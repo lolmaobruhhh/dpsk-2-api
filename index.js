@@ -644,6 +644,12 @@ async function boot() {
         console.log('  ║  Conv timeout: ' + CONV_TIMEOUT + ' min             ║');
         console.log('  ╚══════════════════════════════════════╝');
         console.log('');
+
+        // Self-ping keep-alive to prevent HF Spaces from pausing due to inactivity
+        setInterval(() => {
+            fetch(`http://localhost:${PORT}/`).catch(() => {});
+        }, 5 * 60 * 1000); // Every 5 minutes
+        console.log('[Keep-Alive] Self-ping active (every 5 min)');
     });
 }
 
